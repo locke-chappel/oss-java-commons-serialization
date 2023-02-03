@@ -10,18 +10,19 @@ public class JsonMessage implements Message, Jsonable {
     private final int number;
     private final String text;
 
-    public JsonMessage(Category category, Severity severity, int number) {
-        this.category = category;
-        this.severity = severity;
-        this.number = number;
-        this.text = null;
-    }
-
     public JsonMessage(Category category, Severity severity, int number, String text) {
         this.category = category;
         this.severity = severity;
         this.number = number;
         this.text = text;
+    }
+
+    public JsonMessage(Category category, Severity severity, int number) {
+        this(category, severity, number, null);
+    }
+
+    public JsonMessage(Message message) {
+        this(message.getCategory(), message.getSeverity(), message.getNumber(), message.getText());
     }
 
     @Override

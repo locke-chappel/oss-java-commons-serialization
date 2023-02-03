@@ -1,8 +1,7 @@
 package com.github.lc.oss.commons.serialization;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -12,7 +11,7 @@ import com.github.lc.oss.commons.serialization.Message.Severity;
 @JsonInclude(Include.NON_EMPTY)
 public class Response<T extends Jsonable> implements Jsonable {
     private T body;
-    private Collection<Message> messages;
+    private JsonableCollection<JsonMessage> messages;
 
     public Response() {
     }
@@ -21,11 +20,11 @@ public class Response<T extends Jsonable> implements Jsonable {
         this.body = body;
     }
 
-    public Response(Collection<Message> messages) {
+    public Response(JsonableCollection<JsonMessage> messages) {
         this.messages = messages;
     }
 
-    public Response(T body, Collection<Message> messages) {
+    public Response(T body, JsonableCollection<JsonMessage> messages) {
         this.body = body;
         this.messages = messages;
     }
@@ -38,19 +37,23 @@ public class Response<T extends Jsonable> implements Jsonable {
         this.body = body;
     }
 
-    public Collection<Message> getMessages() {
+    public JsonableCollection<JsonMessage> getMessages() {
         return this.messages;
     }
 
-    public void setMessages(Collection<Message> messages) {
+    public void setMessages(JsonableCollection<JsonMessage> messages) {
         this.messages = messages;
     }
 
     public boolean addMessages(Message... messages) {
         if (this.messages == null) {
-            this.messages = new HashSet<>();
+            this.messages = new JsonableHashSet<>();
         }
-        return this.messages.addAll(Arrays.asList(messages));
+        return this.messages.addAll( //
+                Arrays.stream(messages). //
+                        filter(m -> m != null). //
+                        map(m -> m instanceof JsonMessage ? (JsonMessage) m : new JsonMessage(m)). //
+                        collect(Collectors.toSet()));
     }
 
     public boolean removeMessage(Message... message) {

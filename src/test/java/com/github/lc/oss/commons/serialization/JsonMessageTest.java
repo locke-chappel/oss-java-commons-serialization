@@ -31,4 +31,33 @@ public class JsonMessageTest extends AbstractTest {
         Assertions.assertEquals(1, m.getNumber());
         Assertions.assertEquals("text", m.getText());
     }
+
+    @Test
+    public void test_constructor_v3() {
+        JsonMessage m = new JsonMessage(new Message() {
+            @Override
+            public Category getCategory() {
+                return JsonMessageTest.Category.C;
+            }
+
+            @Override
+            public Severity getSeverity() {
+                return JsonMessageTest.Severity.S;
+            }
+
+            @Override
+            public int getNumber() {
+                return 1;
+            }
+
+            @Override
+            public String getText() {
+                return "text";
+            }
+        });
+        Assertions.assertSame(Category.C, m.getCategory());
+        Assertions.assertSame(Severity.S, m.getSeverity());
+        Assertions.assertEquals(1, m.getNumber());
+        Assertions.assertEquals("text", m.getText());
+    }
 }

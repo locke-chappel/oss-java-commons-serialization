@@ -1,8 +1,6 @@
 package com.github.lc.oss.commons.serialization;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,7 +13,8 @@ public class ResponseTest extends AbstractTest {
     }
 
     private enum Severity implements Message.Severity {
-        S
+        S,
+        T
     }
 
     @Test
@@ -30,7 +29,7 @@ public class ResponseTest extends AbstractTest {
 
         Jsonable body = new Jsonable() {
         };
-        Collection<Message> messages = new HashSet<>();
+        JsonableCollection<JsonMessage> messages = new JsonableHashSet<>();
 
         response.setBody(body);
         response.setMessages(messages);
@@ -65,7 +64,7 @@ public class ResponseTest extends AbstractTest {
     public void test_v2() {
         Jsonable body = new Jsonable() {
         };
-        Collection<Message> messages = new HashSet<>();
+        JsonableCollection<JsonMessage> messages = new JsonableHashSet<>();
         Response<Jsonable> response = new Response<>(body, messages);
         Assertions.assertSame(body, response.getBody());
         Assertions.assertSame(messages, response.getMessages());
@@ -146,7 +145,7 @@ public class ResponseTest extends AbstractTest {
 
     @Test
     public void test_v4() {
-        Collection<Message> messages = new HashSet<>();
+        JsonableCollection<JsonMessage> messages = new JsonableHashSet<>();
         Response<Jsonable> response = new Response<>(messages);
         Assertions.assertNull(response.getBody());
         Assertions.assertSame(messages, response.getMessages());
@@ -197,8 +196,30 @@ public class ResponseTest extends AbstractTest {
         response.addMessages((Message) null);
         Assertions.assertFalse(response.hasSeverity(Severity.S));
 
-        Message message = new JsonMessage(Category.C, null, 2, "text");
+        response.setMessages(new JsonableHashSet<>(Arrays.asList((JsonMessage) null)));
+        Assertions.assertFalse(response.hasSeverity(Severity.S));
+
+        Message message = new Message() {
+            @Override
+            public Category getCategory() {
+                return ResponseTest.Category.C;
+            }
+
+            @Override
+            public Severity getSeverity() {
+                return ResponseTest.Severity.T;
+            }
+
+            @Override
+            public int getNumber() {
+                return 2;
+            }
+        };
         response.addMessages(message);
+        Assertions.assertTrue(response.hasSeverity(Severity.T));
+
+        JsonMessage jsonMessage = new JsonMessage(Category.C, null, 2, "text");
+        response.addMessages(jsonMessage);
         Assertions.assertFalse(response.hasSeverity(Severity.S));
 
         message = new JsonMessage(Category.C, new Message.Severity() {
@@ -207,11 +228,11 @@ public class ResponseTest extends AbstractTest {
                 return "R";
             }
         }, 2, "text");
-        response.setMessages(Arrays.asList(message));
+        response.setMessages(new JsonableHashSet<>(Arrays.asList(jsonMessage)));
         Assertions.assertFalse(response.hasSeverity(Severity.S));
 
-        message = new JsonMessage(Category.C, Severity.S, 2, "text");
-        response.setMessages(Arrays.asList(message));
+        jsonMessage = new JsonMessage(Category.C, Severity.S, 2, "text");
+        response.setMessages(new JsonableHashSet<>(Arrays.asList(jsonMessage)));
         Assertions.assertTrue(response.hasSeverity(Severity.S));
     }
 }
