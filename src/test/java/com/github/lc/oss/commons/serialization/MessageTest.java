@@ -46,6 +46,28 @@ public class MessageTest extends AbstractTest {
     }
 
     @Test
+    public void test_defaultText() {
+        Message m = new Message() {
+            @Override
+            public Category getCategory() {
+                return null;
+            }
+
+            @Override
+            public Severity getSeverity() {
+                return null;
+            }
+
+            @Override
+            public int getNumber() {
+                return 0;
+            }
+        };
+
+        Assertions.assertNull(m.getText());
+    }
+
+    @Test
     public void test_isSame() {
         Message n1 = new JsonMessage(null, null, -1);
         Message n2 = new JsonMessage(Categories.App, null, -1);

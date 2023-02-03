@@ -66,7 +66,9 @@ public interface Message {
 
     int getNumber();
 
-    String getText();
+    default String getText() {
+        return null;
+    }
 
     default boolean isSame(Message other) {
         if (this == other) {
