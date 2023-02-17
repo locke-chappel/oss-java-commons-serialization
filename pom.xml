@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>com.github.locke-chappel.oss.commons</groupId>
+        <groupId>io.github.locke-chappel.oss.commons</groupId>
         <artifactId>parent</artifactId>
         <version>1.0.0</version>
     </parent>
@@ -80,8 +80,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <argLine>
-                        --add-opens com.github.lc.oss.commons.serialization/com.github.lc.oss.commons.serialization=ALL-UNNAMED
-                        --add-opens com.github.lc.oss.commons.serialization/com.github.lc.oss.commons.serialization=com.fasterxml.jackson.databind
+                        --add-opens io.github.lc.oss.commons.serialization/io.github.lc.oss.commons.serialization=ALL-UNNAMED
+                        --add-opens io.github.lc.oss.commons.serialization/io.github.lc.oss.commons.serialization=com.fasterxml.jackson.databind
                         ${JacocoArgs}
                     </argLine>
                 </configuration>
