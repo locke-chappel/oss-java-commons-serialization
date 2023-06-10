@@ -195,9 +195,11 @@ public class ResponseTest extends AbstractTest {
 
         response.addMessages((Message) null);
         Assertions.assertFalse(response.hasSeverity(Severity.S));
+        Assertions.assertFalse(response.hasSeverity(null));
 
         response.setMessages(new JsonableHashSet<>(Arrays.asList((JsonMessage) null)));
         Assertions.assertFalse(response.hasSeverity(Severity.S));
+        Assertions.assertFalse(response.hasSeverity(null));
 
         Message message = new Message() {
             @Override

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import io.github.lc.oss.commons.serialization.Message.Severity;
 
 @JsonInclude(Include.NON_EMPTY)
@@ -79,6 +80,7 @@ public class Response<T extends Jsonable> implements Jsonable {
 
         if (severity == null) {
             return this.messages.stream(). //
+                    filter(m -> m != null). //
                     anyMatch(m -> m.getSeverity() == null);
         }
 
