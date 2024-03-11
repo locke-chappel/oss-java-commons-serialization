@@ -12,7 +12,7 @@
     <version>1.0.10</version>
     <name>${project.artifactId}</name>
     <description>A common serializtion framework to help avoid accidental de/serializtion of object instances</description>
-    <url>https://github.com/locke-chappel/oss-commons-serialization</url>
+    <url>https://github.com/locke-chappel/oss-java-commons-serialization</url>
 
     <licenses>
         <license>
